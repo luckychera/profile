@@ -1,0 +1,25 @@
+node_modules
+npm-debug.log
+
+.git
+.gitignore
+.github
+
+.env
+.env.*
+!.env.example
+
+# Editor/OS junk
+.vscode
+.idea
+.DS_Store
+
+# Docs & tests (optional to exclude from prod image)
+*.md
+tests
+coverage
+
+# Docker files themselves don't need to be in the build context
+Dockerfile
+docker-compose.yml
+.dockerignore

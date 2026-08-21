@@ -2,18 +2,18 @@ const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
 
-// MySQL connection – adjust credentials
+// MySQL connection – reads from environment variables (falls back to local dev defaults)
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "#Chera246",
-  database: "portfolio",
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "#Chera246",
+  database: process.env.DB_NAME || "portfolio",
 });
 
 db.connect((err) => {

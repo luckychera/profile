@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: yourname/profile-app:1.0
+    container_name: profile-app
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      # Use the Compose service name "db" as the hostname — Docker's
+      # internal DNS resolves it automatically on the shared network
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: profileuser
+      DB_PASSWORD: profilepass
+      DB_NAME: portfolio
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: mysql:8
+    container_name: profile-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: portfolio
+      MYSQL_USER: profileuser
+      MYSQL_PASSWORD: profilepass
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
