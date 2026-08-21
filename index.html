@@ -1,27 +1,1193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lucky | Web Developer</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-     <link rel="icon" href="./image/lu.jpg">
-     <link rel="stylesheet" href="styles.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link rel="icon" href="./image/lu.jpg" />
+    <style>
+        /* ===== ROOT ===== */
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --text: #e5e7eb;
+            --bg: #0a0a0a;
+            --card: #1a1a1a;
+            --border: #2a2a2a;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --radius: 12px;
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            opacity: 0;
+            animation: pageFadeIn 0.8s ease forwards;
+        }
+        @keyframes pageFadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            top: 0;
+            backdrop-filter: blur(10px);
+            background: rgba(26, 26, 26, 0.9);
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        .logo a {
+            font-size: 2rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+        .logo a:hover {
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .nav-links li {
+            position: relative;
+        }
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0.8rem;
+            transition: var(--transition);
+            position: relative;
+        }
+        /* Smooth underline */
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+            transform: translateX(-50%);
+        }
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 80%;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .nav-links .admin-link {
+            font-size: 1.3rem;
+        }
+        .nav-links .admin-link:hover {
+            transform: rotate(60deg) scale(1.1);
+        }
+
+        .burger {
+            display: none;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+            padding: 5px;
+        }
+        .burger div {
+            width: 28px;
+            height: 3px;
+            background: var(--text);
+            transition: var(--transition);
+        }
+        .burger.active .line1 {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .burger.active .line2 {
+            opacity: 0;
+        }
+        .burger.active .line3 {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            padding: 6rem 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--primary);
+        }
+        .hero-content {
+            text-align: center;
+        }
+        .cta-button {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            padding: 0.8rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 2rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        /* ===== ABOUT ===== */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        .profile-image {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+        .profile-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        /* ===== SKILLS - PROGRESS BARS ===== */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            width: 100%;
+            max-width: 1000px;
+        }
+        .skill-category {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            flex: 1;
+            min-width: 280px;
+            transition: var(--transition);
+        }
+        .skill-category:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.1);
+        }
+        .skill-category h3 {
+            color: var(--primary);
+            margin-bottom: 1.2rem;
+            font-size: 1.2rem;
+        }
+        .skill-item {
+            margin-bottom: 1rem;
+        }
+        .skill-item .skill-name {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+        .skill-item .skill-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .skill-item .skill-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            width: 0%;
+            transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* ===== PROJECTS ===== */
+        .projects-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .project-card {
+            flex: 1 1 280px;
+            max-width: 350px;
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: relative;
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 40px rgba(59, 130, 246, 0.2);
+        }
+        .project-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .project-card p {
+            flex: 1;
+            color: #c0c0c0;
+            font-size: 0.95rem;
+        }
+        .tech-tag {
+            display: inline-block;
+            background: var(--border);
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin: 0.2rem 0.2rem 0.2rem 0;
+            color: var(--text);
+            transition: var(--transition);
+        }
+        .tech-tag:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+        .project-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .project-actions button,
+        .project-actions a {
+            padding: 0.3rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-edit {
+            background: var(--accent);
+            color: #000;
+        }
+        .btn-edit:hover {
+            background: #d97706;
+            transform: scale(1.05);
+        }
+        .btn-delete {
+            background: #ef4444;
+            color: #fff;
+        }
+        .btn-delete:hover {
+            background: #b91c1c;
+            transform: scale(1.05);
+        }
+        .btn-github {
+            background: #333;
+            color: #fff;
+        }
+        .btn-github:hover {
+            background: #555;
+            transform: scale(1.05);
+        }
+        .btn-live {
+            background: var(--secondary);
+            color: #fff;
+        }
+        .btn-live:hover {
+            background: #059669;
+            transform: scale(1.05);
+        }
+
+        /* Tooltips */
+        .tooltip {
+            position: relative;
+        }
+        .tooltip::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) scale(0.8);
+            background: var(--card);
+            color: var(--text);
+            padding: 0.3rem 0.8rem;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            border: 1px solid var(--border);
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+        .tooltip:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        /* ===== CONTACT ===== */
+        .contact-wrapper {
+            display: flex;
+            gap: 3rem;
+            width: 100%;
+            max-width: 1100px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+        }
+        .contact-form {
+            flex: 1.2;
+        }
+        .contact-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding-left: 2rem;
+            border-left: 1px solid var(--border);
+        }
+        .contact-info h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .contact-info .info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        .contact-info .info-item:hover {
+            transform: translateX(5px);
+        }
+        .contact-info .info-item i {
+            width: 2.2rem;
+            height: 2.2rem;
+            background: var(--bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.1rem;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        .contact-info .info-item:hover i {
+            background: var(--primary);
+            color: #fff;
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .contact-info .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .contact-info .social-links a {
+            color: var(--text);
+            font-size: 1.6rem;
+            transition: var(--transition);
+            display: inline-block;
+        }
+        .contact-info .social-links a:hover {
+            color: var(--primary);
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        .contact-info .map-container {
+            margin-top: 0.5rem;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .contact-info .map-container iframe {
+            width: 100%;
+            height: 180px;
+            border: 0;
+            display: block;
+        }
+
+        /* Floating Labels */
+        .floating-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        .floating-group label {
+            position: absolute;
+            top: 0.8rem;
+            left: 1rem;
+            font-size: 0.95rem;
+            color: #888;
+            pointer-events: none;
+            transition: var(--transition);
+            background: var(--bg);
+            padding: 0 0.3rem;
+        }
+        .floating-group input,
+        .floating-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        .floating-group input:focus,
+        .floating-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+        }
+        .floating-group input:focus+label,
+        .floating-group input:not(:placeholder-shown)+label,
+        .floating-group textarea:focus+label,
+        .floating-group textarea:not(:placeholder-shown)+label {
+            top: -0.6rem;
+            left: 0.8rem;
+            font-size: 0.75rem;
+            color: var(--primary);
+            background: var(--bg);
+        }
+        .floating-group textarea {
+            height: 130px;
+            resize: vertical;
+        }
+        .floating-group .error-message {
+            color: #ef4444;
+            font-size: 0.8rem;
+            margin-top: 0.2rem;
+            display: none;
+            animation: shake 0.4s ease;
+        }
+        .floating-group.invalid input,
+        .floating-group.invalid textarea {
+            border-color: #ef4444;
+            animation: shake 0.4s ease;
+        }
+        .floating-group.invalid .error-message {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-8px);
+            }
+            75% {
+                transform: translateX(8px);
+            }
+        }
+
+        .submit-button {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.8rem 2.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .submit-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .submit-button .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        .submit-button.loading .spinner {
+            display: inline-block;
+        }
+        .submit-button.loading .btn-text {
+            display: none;
+        }
+        .submit-button.success .btn-text {
+            display: inline-block;
+        }
+        .submit-button.success .btn-text i {
+            animation: checkPop 0.4s ease;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes checkPop {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.4);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* ===== BACK TO TOP ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 80px;
+            right: 2rem;
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(30px) scale(0.8);
+            pointer-events: none;
+            z-index: 999;
+        }
+        .back-to-top.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+            animation: bounceIn 0.5s ease;
+        }
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.5);
+        }
+        .back-to-top:hover i {
+            transform: rotate(360deg);
+        }
+        .back-to-top i {
+            transition: var(--transition);
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* ===== FLOATING ADMIN ===== */
+        .floating-admin {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 1.6rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+        .floating-admin:hover {
+            transform: scale(1.15) rotate(60deg);
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.2);
+        }
+
+        /* ===== LOGIN MODAL ===== */
+        .login-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+        }
+        .login-overlay.active {
+            display: flex;
+        }
+        .login-modal {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            max-width: 400px;
+            width: 95%;
+            box-shadow: var(--shadow);
+            animation: scaleIn 0.3s ease;
+        }
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .login-modal h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .login-modal .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .login-modal .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+        }
+        .login-modal .form-group input {
+            width: 100%;
+            padding: 0.7rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        .login-modal .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            outline: none;
+        }
+        .login-modal .btn-login {
+            width: 100%;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .login-modal .btn-login:hover {
+            background: var(--primary-dark);
+        }
+        .login-modal .error-msg {
+            color: #ef4444;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            text-align: center;
+            display: none;
+        }
+        .login-modal .error-msg.show {
+            display: block;
+            animation: shake 0.4s ease;
+        }
+
+        /* ===== PROJECT MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            max-width: 550px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: var(--shadow);
+            animation: scaleIn 0.3s ease;
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text);
+            transition: var(--transition);
+        }
+        .modal-close:hover {
+            color: #ef4444;
+            transform: rotate(90deg);
+        }
+        .modal h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            text-align: left;
+        }
+        .modal .form-group {
+            margin-bottom: 1rem;
+        }
+        .modal .form-group label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .modal .form-group input,
+        .modal .form-group textarea {
+            width: 100%;
+            padding: 0.7rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        .modal .form-group input:focus,
+        .modal .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            outline: none;
+        }
+        .modal .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .btn-submit-modal {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-submit-modal:hover {
+            background: var(--primary-dark);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 6rem;
+            right: -400px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            color: var(--text);
+            box-shadow: var(--shadow);
+            z-index: 3000;
+            transition: right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
+            border-left: 4px solid var(--primary);
+            max-width: 380px;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .toast.show {
+            right: 2rem;
+            pointer-events: auto;
+        }
+        .toast.success {
+            border-left-color: var(--secondary);
+        }
+        .toast.error {
+            border-left-color: #ef4444;
+        }
+        .toast i {
+            font-size: 1.2rem;
+        }
+        .toast.success i {
+            color: var(--secondary);
+        }
+        .toast.error i {
+            color: #ef4444;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            padding: 4rem 0 2rem;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+        }
+        .footer-section h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .footer-section ul {
+            list-style: none;
+        }
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        .footer-section ul li a {
+            color: var(--text);
+            text-decoration: none;
+            transition: var(--transition);
+            position: relative;
+        }
+        .footer-section ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+        .footer-section ul li a:hover::after {
+            width: 100%;
+        }
+        .footer-section ul li a:hover {
+            color: var(--primary);
+        }
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ===== PARTICLE BACKGROUND ===== */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .contact-wrapper {
+                flex-direction: column;
+                padding: 1.5rem;
+            }
+            .contact-info {
+                border-left: none;
+                padding-left: 0;
+                border-top: 1px solid var(--border);
+                padding-top: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                right: -100%;
+                top: 5rem;
+                flex-direction: column;
+                background: var(--card);
+                width: 100%;
+                text-align: center;
+                padding: 2rem 0;
+                border-bottom: 1px solid var(--border);
+                transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                gap: 0;
+            }
+            .nav-links.active {
+                right: 0;
+            }
+            .nav-links li {
+                margin: 1rem 0;
+                opacity: 0;
+                transform: translateX(20px);
+                transition: var(--transition);
+            }
+            .nav-links.active li {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            .nav-links.active li:nth-child(1) {
+                transition-delay: 0.05s;
+            }
+            .nav-links.active li:nth-child(2) {
+                transition-delay: 0.1s;
+            }
+            .nav-links.active li:nth-child(3) {
+                transition-delay: 0.15s;
+            }
+            .nav-links.active li:nth-child(4) {
+                transition-delay: 0.2s;
+            }
+            .nav-links.active li:nth-child(5) {
+                transition-delay: 0.25s;
+            }
+            .nav-links.active li:nth-child(6) {
+                transition-delay: 0.3s;
+            }
+
+            .burger {
+                display: flex;
+            }
+
+            .about-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .projects-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            .project-card {
+                max-width: 100%;
+                width: 100%;
+            }
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+            h2 {
+                font-size: 2rem;
+            }
+            .skill-category {
+                min-width: 100%;
+            }
+
+            .back-to-top {
+                bottom: 80px;
+                right: 1.2rem;
+                width: 42px;
+                height: 42px;
+                font-size: 1rem;
+            }
+            .floating-admin {
+                width: 48px;
+                height: 48px;
+                font-size: 1.3rem;
+                bottom: 1.2rem;
+                right: 1.2rem;
+            }
+            .contact-wrapper {
+                padding: 1rem;
+            }
+            .contact-info .map-container iframe {
+                height: 150px;
+            }
+            .toast {
+                max-width: 300px;
+                padding: 0.8rem 1.2rem;
+                font-size: 0.9rem;
+                bottom: 5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            h2 {
+                font-size: 1.6rem;
+            }
+            .project-card {
+                padding: 1rem;
+            }
+            .project-actions button,
+            .project-actions a {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.7rem;
+            }
+        }
+
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 <body>
+
+    <!-- ===== PARTICLE BACKGROUND ===== -->
+    <div id="particles-js"></div>
+
+    <!-- ===== HEADER ===== -->
     <header>
         <div class="container">
             <nav>
-                <div class="logo"><a href="#">Lucky</a> </div>
-                <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#skills">Skills</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                 
-                    <li><a href="#contact">Contact</a></li>
+                <div class="logo"><a href="#" id="navName">Lucky</a></div>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#home" class="nav-link" data-section="home">Home</a></li>
+                    <li><a href="#about" class="nav-link" data-section="about">About</a></li>
+                    <li><a href="#skills" class="nav-link" data-section="skills">Skills</a></li>
+                    <li><a href="#projects" class="nav-link" data-section="projects">Projects</a></li>
+                    <li><a href="#contact" class="nav-link" data-section="contact">Contact</a></li>
+                    <li>
+                        <a href="#" class="admin-link" id="adminNavLink" title="Admin Panel">
+                            <i class="fas fa-cog"></i>
+                        </a>
+                    </li>
                 </ul>
-                <div class="burger">
+                <div class="burger" id="burger">
                     <div class="line1"></div>
                     <div class="line2"></div>
                     <div class="line3"></div>
@@ -30,153 +1196,186 @@
         </div>
     </header>
 
+    <!-- ===== MAIN ===== -->
     <main>
-        <section id="home">
-            
-            <div class="hero-content" >
-                <h1>Creative Web Developer</h1>
-                <h2 id="hero" style="display:block;color:#fff;font-size:25px;text-align:center;text-shadow:2px 2px 4px rgba(0,0,0,0.3);font-family: 'Segoe UI', sans-serif;"></h2>
-                <p>Bringing ideas to life through code and design</p>
-                <a href="#contact" class="cta-button">Get in Touch</a>
+        <!-- HOME -->
+        <section id="home" data-aos="fade-up">
+            <div class="hero-content">
+                <h1 id="heroTitle" data-aos="fade-up" data-aos-delay="100">Creative Web Developer</h1>
+                <h2 id="heroSub" style="display:block;color:#fff;font-size:25px;text-align:center;text-shadow:2px 2px 4px rgba(0,0,0,0.3);font-family:'Segoe UI',sans-serif;" data-aos="fade-up" data-aos-delay="200"></h2>
+                <p id="heroDesc" data-aos="fade-up" data-aos-delay="300">Bringing ideas to life through code and design</p>
+                <a href="#contact" class="cta-button" data-aos="fade-up" data-aos-delay="400">Get in Touch</a>
             </div>
         </section>
-        <section id="about">
+
+        <!-- ABOUT -->
+        <section id="about" data-aos="fade-up">
             <div class="container">
-                <h2>About Me</h2>
+                <h2 data-aos="fade-up">About Me</h2>
                 <div class="about-content">
-                    <img src="./image/lu.jpg" alt="Profile" class="profile-image">
-                    <div class="about-text">
-                        <p>Hi, I'm Lucky.  I'm a web developer who loves turning ideas into clean, clickable websites. I got into coding because I enjoy solving puzzles—and building stuff people actually use. 
-                        <br><p>My journey in web development started with a curiosity for how things work on the internet, and it has evolved into a fulfilling career where I get to solve problems and create digital solutions every day.</p>
-                            <p>Outside of development, I also run a live stream and digital content hub. I design custom graphics, manage interactive broadcasts across platforms like TikTok and YouTube, and build engaging spaces for gaming and tech communities. This lets me blend my technical skills with creative media production.</p>
-                    </div>
+                    <img src="./image/lu.jpg" alt="Profile" class="profile-image" id="profileImg" data-aos="zoom-in" data-aos-delay="100" />
+                    <div class="about-text" id="aboutText" data-aos="fade-left" data-aos-delay="200"></div>
                 </div>
             </div>
         </section>
 
-        <section id="skills">
+        <!-- SKILLS -->
+        <section id="skills" data-aos="fade-up">
             <div class="container">
-                <h2>My Skills</h2>
-                <div class="skills-container">
-                    <div class="skill-category">
-                        <h3>Frontend</h3>
-                        <ul>
-                            <li><i class="fab fa-html5"></i> HTML5</li>
-                            <li><i class="fab fa-css3-alt"></i> CSS3</li>
-                            <li><i class="fab fa-js"></i> JavaScript</li>
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h3>Libraries</h3>
-                        <ul>
-                       
-                            <li><i class="fab fa-react"></i> React</li>
-                            <li><i class="fab fa-bootstrap"></i> Bootstrap</li>
-                            <li><i class="fab fa-tailwind"></i> Tailwind</li>
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h3>Backend</h3>
-                        <ul>
-                            <li><i class="fab fa-node-js"></i> Node.js</li>
-                            <li><i class="fas fa-database"></i> MongoDB</li>
-                            <li><i class="fas fa-database"></i> MySQL</li>
-                            <li><i class="fas fa-server"></i> Express.js</li>
-                            <li><i class="fab fa-python"></i> Python</li>
-                            <li><i class="fab fa-php"></i> php</li>
-
-                        </ul>
-                    </div>
-                    <div class="skill-category">
-                        <h3>Tools & Others</h3>
-                        <ul>
-                            <li><i class="fab fa-github"></i> Github</li>
-                            <li><i class="fab fa-wordpress"></i> Wordpress</li>
-                            <li><i class="fab fa-wix"></i>Wix </li>
-                            <li><i class="fab fa-figma"></i> Figma</li>
-                            <li><i class="fab fa-canva"></i> Canva</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                
-            </div>
-        </section>
-
-        <section id="projects">
-            <div class="container">
-                <h2>My Projects</h2>
-                <div class="projects-grid">
-                    <div class="project-card">
-                       
-                        <h3 >E-commerce Platform</h3>
-                        
-                        </div>
-                    <div class="project-card">
-                        <h3 >School Management Web App</h3>
-                        
-                        
-                    </div>
-                    <div class="project-card">
-                        <h3>Result View system</h3>
-                                             
-                    </div>
-                    <div class="project-card">
-                        <h3>Barbershop Platform</h3>
-                    </div>
-                    <div class="project-card">
-                        <h3>Digital E-learning Website</h3>
-                    </div>
-                    <div class="project-card">
-                        <h3>TelPital Healthcare</h3>
-                    </div>    
+                <h2 data-aos="fade-up">My Skills</h2>
+                <div class="skills-container" id="skillsContainer">
+                    <!-- Skills will be injected by JS as progress bars -->
                 </div>
             </div>
         </section>
 
-        
-        <section id="contact">
+        <!-- PROJECTS -->
+        <section id="projects" data-aos="fade-up">
             <div class="container">
-                <h2>Get in Touch</h2>
-                <div class="contact-container">
-                    <form id="contact-form">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" required></textarea>
-                        </div>
-                        <button type="submit" class="submit-button">Send Message</button>
-                    </form>
+                <h2 data-aos="fade-up">My Projects</h2>
+                <div class="projects-grid" id="projectsGrid"></div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" data-aos="fade-up">
+            <div class="container">
+                <h2 data-aos="fade-up">Get in Touch</h2>
+                <div class="contact-wrapper" data-aos="fade-up" data-aos-delay="100">
+                    <div class="contact-form">
+                        <form id="contactForm" novalidate>
+                            <div class="floating-group" id="nameGroup">
+                                <input type="text" id="contactName" name="name" placeholder=" " required />
+                                <label for="contactName">Your Name <span style="color:#ef4444;">*</span></label>
+                                <div class="error-message">Please enter your name.</div>
+                            </div>
+                            <div class="floating-group" id="emailGroup">
+                                <input type="email" id="contactEmail" name="email" placeholder=" " required />
+                                <label for="contactEmail">Email Address <span style="color:#ef4444;">*</span></label>
+                                <div class="error-message">Please enter a valid email.</div>
+                            </div>
+                            <div class="floating-group" id="messageGroup">
+                                <textarea id="contactMessage" name="message" placeholder=" " required></textarea>
+                                <label for="contactMessage">Message <span style="color:#ef4444;">*</span></label>
+                                <div class="error-message">Please enter your message.</div>
+                            </div>
+                            <button type="submit" class="submit-button" id="contactSubmitBtn">
+                                <span class="btn-text"><i class="fas fa-paper-plane"></i> Send Message</span>
+                                <span class="spinner"></span>
+                            </button>
+                        </form>
+                    </div>
+
                     <div class="contact-info">
-                        <h3>Contact Information</h3>
-                       
-                        <p><i class="fas fa-envelope"></i> luckyby246@gmail.com</p>
-                        <p><i class="fas fa-phone"></i>09 92 09 23 92</p>
-                        <p><i class="fas fa-map-marker-alt"></i> Addis Abeba</p>
-                        <div class="social-links">
+                        <h3><i class="fas fa-address-card"></i> Contact Info</h3>
+                        <div class="info-item" data-aos="fade-left" data-aos-delay="150">
+                            <i class="fas fa-envelope"></i>
+                            <span>luckyby246@gmail.com</span>
+                        </div>
+                        <div class="info-item" data-aos="fade-left" data-aos-delay="200">
+                            <i class="fas fa-phone"></i>
+                            <span>09 92 09 23 92</span>
+                        </div>
+                        <div class="info-item" data-aos="fade-left" data-aos-delay="250">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Addis Abeba, Ethiopia</span>
+                        </div>
+                        <div class="info-item" data-aos="fade-left" data-aos-delay="300">
+                            <i class="fas fa-clock"></i>
+                            <span>Mon–Fri: 9:00 AM – 6:00 PM</span>
+                        </div>
+                        <div class="social-links" data-aos="fade-up" data-aos-delay="350">
                             <a href="https://github.com/@luckychera" aria-label="GitHub"><i class="fab fa-github"></i></a>
                             <a href="https://linkedin.com/@luckyby246" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
                             <a href="https://www.instagram.com/@lucky_t246" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                         </div>
+                        <div class="map-container" data-aos="fade-up" data-aos-delay="400">
+                            <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126304.39454473907!2d38.71867170000001!3d9.0262611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85f58dbec7d7%3A0x5ae37d7aacdd3af1!2sAddis%20Ababa%2C%20Ethiopia!5e0!3m2!1sen!2sus!4v1712345678901"
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="Location map"
+                        ></iframe>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- ===== FLOATING ADMIN ===== -->
+    <a href="#" class="floating-admin" id="adminFloatBtn" aria-label="Admin Panel">
+        <i class="fas fa-cog"></i>
+    </a>
+
+    <!-- ===== BACK TO TOP ===== -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- ===== LOGIN MODAL ===== -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-modal">
+            <h2><i class="fas fa-lock"></i> Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" placeholder="Enter username" required />
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password" required />
+                </div>
+                <button type="submit" class="btn-login">Login</button>
+                <div class="error-msg" id="loginError">Invalid credentials. Try again.</div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== PROJECT MODAL ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <h2 id="modalTitle">Add New Project</h2>
+            <form id="projectForm">
+                <input type="hidden" id="projectId" />
+                <div class="form-group">
+                    <label for="projectTitle">Title *</label>
+                    <input type="text" id="projectTitle" required />
+                </div>
+                <div class="form-group">
+                    <label for="projectDesc">Description *</label>
+                    <textarea id="projectDesc" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projectTech">Technologies (comma separated)</label>
+                    <input type="text" id="projectTech" placeholder="React, Node.js" />
+                </div>
+                <div class="form-group">
+                    <label for="projectGithub">GitHub URL</label>
+                    <input type="url" id="projectGithub" placeholder="https://github.com/..." />
+                </div>
+                <div class="form-group">
+                    <label for="projectLive">Live Demo URL</label>
+                    <input type="url" id="projectLive" placeholder="https://..." />
+                </div>
+                <button type="submit" class="btn-submit-modal" id="modalSubmitBtn">Save Project</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Success!</span>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>About Lucky Tolosa</h3>
-                    <p>I'm passionated about creating beautiful and functional websites that help businesses grow and succeed online.</p>
+                    <p id="footerAbout">I'm passionate about creating beautiful and functional websites that help businesses grow and succeed online.</p>
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>
@@ -186,72 +1385,614 @@
                         <li><a href="#skills">Skills</a></li>
                         <li><a href="#projects">Projects</a></li>
                         <li><a href="#contact">Contact</a></li>
+                        <li><a href="#" id="adminFooterLink"><i class="fas fa-cog"></i> Admin</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Contact Us</h3>
                     <p><i class="fas fa-envelope"></i> luckyby246@gmail.com</p>
-                    <p><i class="fas fa-phone"></i>09 92 09 23 92</p>
+                    <p><i class="fas fa-phone"></i> 09 92 09 23 92</p>
                     <p><i class="fas fa-map-marker-alt"></i> Addis Abeba</p>
                 </div>
-                
             </div>
             <div class="footer-bottom">
                 <p><span id="year"></span> Lucky. All rights reserved.</p>
             </div>
         </div>
     </footer>
-   <script src="script.js"></script>
-   <script>
-    (function() {
-            const el = document.getElementById('hero');
-            const texts = ['Hello', 'I\'m...','Code Enthusiast', 'Creative Web Developer','UI/UX Designer','React Specialist','Gamer','Live Streamer','Problem Solver','Welcome to my Portfolio!'];
-            let idx = 0, char = 0, deleting = false;
-            
-            
+
+    <!-- ============================================================ -->
+    <!-- ===== SCRIPTS ===== -->
+    <!-- AOS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Particles (lightweight) -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+    <script>
+        // ===== AOS INIT =====
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 50
+        });
+
+        // ===== PARTICLES =====
+        if (typeof particlesJS !== 'undefined') {
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: '#3b82f6' },
+                    shape: { type: 'circle' },
+                    opacity: { value: 0.3, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: '#3b82f6',
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 2,
+                        direction: 'none',
+                        random: true,
+                        straight: false,
+                        out_mode: 'out'
+                    }
+                },
+                interactivity: {
+                    detect_on: 'canvas',
+                    events: {
+                        onhover: { enable: true, mode: 'grab' },
+                        onclick: { enable: true, mode: 'push' },
+                        resize: true
+                    }
+                },
+                retina_detect: true
+            });
+        }
+
+        // ===== AUTH =====
+        const API_BASE = 'http://localhost:5000/api';
+        const AUTH_KEY = 'portfolioAuth';
+        const VALID_USER = 'luckyprofile';
+        const VALID_PASS = 'lucky4321';
+
+        function isLoggedIn() {
+            return localStorage.getItem(AUTH_KEY) === 'true';
+        }
+
+        function login(username, password) {
+            if (username === VALID_USER && password === VALID_PASS) {
+                localStorage.setItem(AUTH_KEY, 'true');
+                return true;
+            }
+            return false;
+        }
+
+        // ===== LOGIN MODAL =====
+        const loginOverlay = document.getElementById('loginOverlay');
+        const loginForm = document.getElementById('loginForm');
+        const loginError = document.getElementById('loginError');
+        let pendingAction = null;
+
+        function showLoginModal(callback) {
+            pendingAction = callback;
+            loginError.classList.remove('show');
+            loginForm.reset();
+            loginOverlay.classList.add('active');
+            document.getElementById('loginUsername').focus();
+        }
+
+        function hideLoginModal() {
+            loginOverlay.classList.remove('active');
+            pendingAction = null;
+        }
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            if (login(username, password)) {
+                hideLoginModal();
+                if (typeof pendingAction === 'function') {
+                    pendingAction();
+                    pendingAction = null;
+                }
+                showToast('Login successful!', 'success');
+            } else {
+                loginError.classList.add('show');
+                loginError.textContent = 'Invalid username or password.';
+            }
+        });
+
+        loginOverlay.addEventListener('click', (e) => {
+            if (e.target === loginOverlay) {
+                hideLoginModal();
+                pendingAction = null;
+            }
+        });
+
+        function requireAuth(action) {
+            if (isLoggedIn()) {
+                action();
+            } else {
+                showLoginModal(action);
+            }
+        }
+
+        // ===== TOAST =====
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = toast.querySelector('i');
+            const message = document.getElementById('toastMessage');
+            message.textContent = msg;
+            toast.className = 'toast ' + type;
+            if (type === 'success') {
+                icon.className = 'fas fa-check-circle';
+            } else if (type === 'error') {
+                icon.className = 'fas fa-exclamation-circle';
+            }
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            clearTimeout(window.toastTimeout);
+            window.toastTimeout = setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        // ===== LOAD CONFIG =====
+        async function loadConfig() {
+            try {
+                const res = await fetch(`${API_BASE}/config`);
+                if (!res.ok) throw new Error('Config load failed');
+                const config = await res.json();
+
+                document.getElementById('navName').textContent = config.nav_name || 'Lucky';
+                document.getElementById('heroTitle').textContent = config.hero_title || 'Creative Web Developer';
+                document.getElementById('heroDesc').textContent = config.hero_subtitle || 'Bringing ideas to life through code and design';
+
+                const aboutContainer = document.getElementById('aboutText');
+                if (config.about_text) {
+                    const paragraphs = config.about_text.split('\n').filter(p => p.trim());
+                    aboutContainer.innerHTML = paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join('');
+                } else {
+                    aboutContainer.innerHTML = '<p>Hi, I\'m Lucky...</p>';
+                }
+
+                const img = document.getElementById('profileImg');
+                if (config.profile_image) img.src = config.profile_image;
+
+                document.getElementById('footerAbout').textContent = config.footer_about || 'I\'m passionate about creating beautiful and functional websites...';
+
+            } catch (err) {
+                console.error('Config load error:', err);
+                showToast('Failed to load site content', 'error');
+            }
+        }
+
+        // ===== SKILLS (Progress Bars) =====
+        const skillData = [
+            { category: 'Frontend', skills: [
+                    { name: 'HTML5', level: 90 },
+                    { name: 'CSS3', level: 85 },
+                    { name: 'JavaScript', level: 80 }
+                ] },
+            { category: 'Libraries', skills: [
+                    { name: 'React', level: 75 },
+                    { name: 'Bootstrap', level: 85 },
+                    { name: 'Tailwind', level: 80 }
+                ] },
+            { category: 'Backend', skills: [
+                    { name: 'Node.js', level: 70 },
+                    { name: 'Express.js', level: 75 },
+                    { name: 'MongoDB', level: 65 },
+                    { name: 'MySQL', level: 70 },
+                    { name: 'Python', level: 60 },
+                    { name: 'PHP', level: 55 }
+                ] },
+            { category: 'Tools & Others', skills: [
+                    { name: 'Git/GitHub', level: 85 },
+                    { name: 'WordPress', level: 80 },
+                    { name: 'Wix', level: 70 },
+                    { name: 'Figma', level: 75 },
+                    { name: 'Canva', level: 80 }
+                ] }
+        ];
+
+        function renderSkills() {
+            const container = document.getElementById('skillsContainer');
+            container.innerHTML = '';
+            skillData.forEach(cat => {
+                const div = document.createElement('div');
+                div.className = 'skill-category';
+                div.setAttribute('data-aos', 'fade-up');
+                div.innerHTML = `<h3>${cat.category}</h3>`;
+                cat.skills.forEach(skill => {
+                    const item = document.createElement('div');
+                    item.className = 'skill-item';
+                    item.innerHTML = `
+                        <div class="skill-name">
+                            <span>${skill.name}</span>
+                            <span>${skill.level}%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="fill" data-width="${skill.level}"></div>
+                        </div>
+                    `;
+                    div.appendChild(item);
+                });
+                container.appendChild(div);
+            });
+
+            // Animate bars after a delay (AOS triggers)
+            setTimeout(() => {
+                document.querySelectorAll('.skill-bar .fill').forEach(bar => {
+                    const width = bar.dataset.width;
+                    bar.style.width = width + '%';
+                });
+            }, 600);
+        }
+
+        // ===== LOAD PROJECTS =====
+        async function loadProjects() {
+            try {
+                const res = await fetch(`${API_BASE}/projects`);
+                if (!res.ok) throw new Error('Failed to load projects');
+                const data = await res.json();
+                renderProjects(data);
+            } catch (err) {
+                console.error(err);
+                showToast('Failed to load projects', 'error');
+                renderProjects([]);
+            }
+        }
+
+        function renderProjects(projects) {
+            const grid = document.getElementById('projectsGrid');
+            if (!projects || projects.length === 0) {
+                grid.innerHTML =
+                    `<div style="text-align:center;padding:2rem;color:#888;width:100%;"><p>No projects yet.</p></div>`;
+                return;
+            }
+            grid.innerHTML = projects.map((p, index) => {
+                const techs = p.technologies ? p.technologies.split(',').map(t => t.trim()).filter(Boolean) : [];
+                const techHtml = techs.map(t => `<span class="tech-tag">${escapeHtml(t)}</span>`).join('');
+                return `
+                    <div class="project-card" data-id="${p.id}" data-aos="fade-up" data-aos-delay="${index * 80}">
+                        <h3>${escapeHtml(p.title)}</h3>
+                        <p>${escapeHtml(p.description || '')}</p>
+                        <div style="margin:0.5rem 0;">${techHtml}</div>
+                        <div class="project-actions">
+                            ${p.github_url ? `<a href="${p.github_url}" target="_blank" class="btn-github tooltip" data-tip="View Code"><i class="fab fa-github"></i> Code</a>` : ''}
+                            ${p.live_url ? `<a href="${p.live_url}" target="_blank" class="btn-live tooltip" data-tip="Live Demo"><i class="fas fa-external-link-alt"></i> Live</a>` : ''}
+                            <button class="btn-edit tooltip" data-id="${p.id}" data-tip="Edit Project"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="btn-delete tooltip" data-id="${p.id}" data-tip="Delete Project"><i class="fas fa-trash"></i> Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.querySelectorAll('.btn-edit').forEach(b => {
+                b.addEventListener('click', function() {
+                    const id = this.dataset.id;
+                    requireAuth(() => openEditModal(id));
+                });
+            });
+            document.querySelectorAll('.btn-delete').forEach(b => {
+                b.addEventListener('click', function() {
+                    const id = this.dataset.id;
+                    requireAuth(() => handleDelete(id));
+                });
+            });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
+        }
+
+        // ===== PROJECT MODAL =====
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalClose = document.getElementById('modalClose');
+        const modalTitle = document.getElementById('modalTitle');
+        const projectForm = document.getElementById('projectForm');
+        const projectId = document.getElementById('projectId');
+        const projectTitle = document.getElementById('projectTitle');
+        const projectDesc = document.getElementById('projectDesc');
+        const projectTech = document.getElementById('projectTech');
+        const projectGithub = document.getElementById('projectGithub');
+        const projectLive = document.getElementById('projectLive');
+        const modalSubmitBtn = document.getElementById('modalSubmitBtn');
+
+        function openModal(title, project = null) {
+            modalTitle.textContent = title;
+            if (project) {
+                projectId.value = project.id;
+                projectTitle.value = project.title || '';
+                projectDesc.value = project.description || '';
+                projectTech.value = project.technologies || '';
+                projectGithub.value = project.github_url || '';
+                projectLive.value = project.live_url || '';
+                modalSubmitBtn.textContent = 'Update Project';
+            } else {
+                projectId.value = '';
+                projectTitle.value = '';
+                projectDesc.value = '';
+                projectTech.value = '';
+                projectGithub.value = '';
+                projectLive.value = '';
+                modalSubmitBtn.textContent = 'Add Project';
+            }
+            modalOverlay.classList.add('active');
+        }
+
+        function closeModal() { modalOverlay.classList.remove('active'); }
+
+        async function openEditModal(id) {
+            try {
+                const res = await fetch(`${API_BASE}/projects/${id}`);
+                if (!res.ok) throw new Error('Failed to load project');
+                const project = await res.json();
+                openModal('Edit Project', project);
+            } catch (err) {
+                showToast('Failed to load project: ' + err.message, 'error');
+            }
+        }
+
+        async function handleDelete(id) {
+            if (!confirm('Delete this project?')) return;
+            try {
+                const res = await fetch(`${API_BASE}/projects/${id}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error('Delete failed');
+                showToast('Project deleted', 'success');
+                loadProjects();
+            } catch (err) {
+                showToast('Delete failed: ' + err.message, 'error');
+            }
+        }
+
+        projectForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = projectId.value;
+            const data = {
+                title: projectTitle.value.trim(),
+                description: projectDesc.value.trim(),
+                technologies: projectTech.value.trim(),
+                github_url: projectGithub.value.trim(),
+                live_url: projectLive.value.trim(),
+            };
+            try {
+                let url = `${API_BASE}/projects`;
+                let method = 'POST';
+                if (id) { url += `/${id}`;
+                    method = 'PUT'; }
+                const res = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (!res.ok) throw new Error('Save failed');
+                showToast(id ? 'Project updated!' : 'Project added!', 'success');
+                closeModal();
+                loadProjects();
+            } catch (err) {
+                showToast('Save failed: ' + err.message, 'error');
+            }
+        });
+
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+
+        // ===== ADMIN LINKS =====
+        function goToAdmin() {
+            requireAuth(() => {
+                window.location.href = 'admin.html';
+            });
+        }
+
+        document.getElementById('adminNavLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            goToAdmin();
+        });
+        document.getElementById('adminFloatBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            goToAdmin();
+        });
+        document.getElementById('adminFooterLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            goToAdmin();
+        });
+
+        // ===== BURGER MENU =====
+        const burger = document.getElementById('burger');
+        const navLinks = document.getElementById('navLinks');
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            burger.classList.toggle('active');
+        });
+        document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            burger.classList.remove('active');
+        }));
+
+        // ===== SMOOTH SCROLL =====
+        document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', function(e) {
+            e.preventDefault();
+            const t = document.querySelector(this.getAttribute('href'));
+            if (t) t.scrollIntoView({ behavior: 'smooth' });
+        }));
+
+        // ===== ACTIVE NAV HIGHLIGHT =====
+        const sections = document.querySelectorAll('section[id]');
+        const navLinkEls = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const top = section.offsetTop - 150;
+                if (window.scrollY >= top) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinkEls.forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.section === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // ===== HERO TYPING (smoother) =====
+        (function() {
+            const el = document.getElementById('heroSub');
+            const texts = ['Hello', "I'm...", 'Code Enthusiast', 'Creative Web Developer', 'UI/UX Designer',
+                'React Specialist', 'Gamer', 'Live Streamer', 'Problem Solver', 'Welcome to my Portfolio!'
+            ];
+            let idx = 0,
+                char = 0,
+                deleting = false;
+            const cursor =
+                `<span style="display:inline-block;color:#fff;font-size:25px;font-weight:100;animation:blink 0.7s step-end infinite;margin-left:2px;">|</span>`;
+
             function type() {
                 const txt = texts[idx];
-                const cursor = '<span style="display:inline-block;color:#fff;font-size:25px;font-weight:100;animation:blink 0.8s step-end infinite;margin-left:2px;">|</span>';
-                
-                
-                const displayText = txt.substring(0, char);
-                el.innerHTML = displayText + cursor;
-                
+                el.innerHTML = txt.substring(0, char) + cursor;
                 if (!deleting) {
-                    if (char < txt.length) { 
-                        char++; 
-                        setTimeout(type, 100); 
-                    } else { 
-                        setTimeout(() => { 
-                            deleting = true; 
-                            setTimeout(type, 50); 
-                        }, 1500); 
-                    }
+                    if (char < txt.length) { char++;
+                        setTimeout(type, 80); } else { setTimeout(() => { deleting = true;
+                            setTimeout(type, 40); }, 1500); }
                 } else {
-                    if (char > 0) { 
-                        char--; 
-                        setTimeout(type, 50); 
-                    } else { 
-                        deleting = false; 
-                        idx = (idx + 1) % texts.length; 
-                        setTimeout(type, 100); 
-                    }
+                    if (char > 0) { char--;
+                        setTimeout(type, 40); } else { deleting = false;
+                        idx = (idx + 1) % texts.length;
+                        setTimeout(type, 100); }
                 }
             }
-            
-            
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes blink {
-                    0%, 100% { opacity: 1; }
-                    50% { opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-            
             type();
         })();
+
+        // ===== BACK TO TOP =====
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) backToTop.classList.add('show');
+            else backToTop.classList.remove('show');
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ===== RIPPLE EFFECT =====
+        document.querySelectorAll('.cta-button, .submit-button, .btn-login, .btn-submit-modal, .btn-edit, .btn-delete, .btn-github, .btn-live')
+            .forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const ripple = document.createElement('span');
+                    ripple.style.cssText = `
+                        position: absolute;
+                        top: ${y}px;
+                        left: ${x}px;
+                        width: 0;
+                        height: 0;
+                        border-radius: 50%;
+                        background: rgba(255,255,255,0.3);
+                        transform: translate(-50%, -50%);
+                        animation: rippleAnim 0.6s ease-out forwards;
+                        pointer-events: none;
+                    `;
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 700);
+                });
+            });
+
+        // Add ripple keyframe dynamically
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes rippleAnim {
+                from { width: 0; height: 0; opacity: 1; }
+                to { width: 300px; height: 300px; opacity: 0; }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+
+        // ===== CONTACT FORM =====
+        const contactForm = document.getElementById('contactForm');
+        const contactSubmitBtn = document.getElementById('contactSubmitBtn');
+        const nameInput = document.getElementById('contactName');
+        const emailInput = document.getElementById('contactEmail');
+        const messageInput = document.getElementById('contactMessage');
+
+        function validateField(input, groupId) {
+            const group = document.getElementById(groupId);
+            let isValid = true;
+            if (input.validity.valueMissing || (input.type === 'email' && input.validity.typeMismatch)) {
+                group.classList.add('invalid');
+                isValid = false;
+            } else {
+                group.classList.remove('invalid');
+            }
+            return isValid;
+        }
+
+        nameInput.addEventListener('blur', () => validateField(nameInput, 'nameGroup'));
+        emailInput.addEventListener('blur', () => validateField(emailInput, 'emailGroup'));
+        messageInput.addEventListener('blur', () => validateField(messageInput, 'messageGroup'));
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const isNameValid = validateField(nameInput, 'nameGroup');
+            const isEmailValid = validateField(emailInput, 'emailGroup');
+            const isMessageValid = validateField(messageInput, 'messageGroup');
+
+            if (!isNameValid || !isEmailValid || !isMessageValid) {
+                if (!isNameValid) nameInput.focus();
+                else if (!isEmailValid) emailInput.focus();
+                else if (!isMessageValid) messageInput.focus();
+                showToast('Please fix the highlighted fields.', 'error');
+                return;
+            }
+
+            contactSubmitBtn.classList.add('loading');
+            contactSubmitBtn.disabled = true;
+
+            try {
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                showToast('Your message has been sent successfully!', 'success');
+                contactForm.reset();
+                document.querySelectorAll('.floating-group').forEach(g => g.classList.remove('invalid'));
+                // Show success animation on button
+                contactSubmitBtn.classList.remove('loading');
+                contactSubmitBtn.classList.add('success');
+                setTimeout(() => {
+                    contactSubmitBtn.classList.remove('success');
+                }, 2000);
+            } catch (err) {
+                showToast('Something went wrong. Please try again later.', 'error');
+            } finally {
+                contactSubmitBtn.classList.remove('loading');
+                contactSubmitBtn.disabled = false;
+            }
+        });
+
+        // ===== FOOTER YEAR =====
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // ===== INIT =====
+        renderSkills();
+        loadConfig();
+        loadProjects();
+
+        // Re-trigger AOS for dynamically added content
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.refresh();
+        });
     </script>
-   </script>
 </body>
 </html>

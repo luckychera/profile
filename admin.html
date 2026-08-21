@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel – Lucky Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --text: #e5e7eb;
+            --bg: #0a0a0a;
+            --card: #1a1a1a;
+            --border: #2a2a2a;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 2rem 1rem;
+            opacity: 0;
+            animation: pageFade 0.6s ease forwards;
+        }
+
+        @keyframes pageFade {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .admin-header h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--secondary);
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .btn-home:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-logout {
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .btn-logout:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .section {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .section:hover {
+            border-color: var(--primary);
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.7rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            outline: none;
+        }
+
+        .form-group textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .btn-success {
+            background: #10b981;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .project-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            transition: var(--transition);
+        }
+
+        .project-item:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .project-info {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .project-info h3 {
+            color: var(--primary);
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .project-actions button {
+            padding: 0.3rem 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .project-actions button:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-edit-project {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .btn-delete-project {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        /* Skeleton loader */
+        .skeleton {
+            background: var(--border);
+            border-radius: 8px;
+            height: 80px;
+            margin-bottom: 1rem;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: -400px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            color: var(--text);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-left: 4px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .toast.show {
+            right: 2rem;
+        }
+
+        .toast.success {
+            border-left-color: #10b981;
+        }
+
+        .toast.error {
+            border-left-color: #ef4444;
+        }
+
+        .toast i {
+            font-size: 1.2rem;
+        }
+
+        .toast.success i {
+            color: #10b981;
+        }
+
+        .toast.error i {
+            color: #ef4444;
+        }
+
+        .login-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .login-overlay.active {
+            display: flex;
+        }
+
+        .login-modal {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            max-width: 400px;
+            width: 95%;
+            box-shadow: var(--shadow);
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .login-modal h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .login-modal .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .login-modal .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+        }
+
+        .login-modal .form-group input {
+            width: 100%;
+            padding: 0.7rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .login-modal .btn-login {
+            width: 100%;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-modal .btn-login:hover {
+            background: #1d4ed8;
+        }
+
+        .login-modal .error-msg {
+            color: #ef4444;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            text-align: center;
+            display: none;
+        }
+
+        .login-modal .error-msg.show {
+            display: block;
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-8px);
+            }
+
+            75% {
+                transform: translateX(8px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .admin-actions {
+                justify-content: center;
+            }
+
+            .toast {
+                max-width: 300px;
+                font-size: 0.9rem;
+                padding: 0.7rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== LOGIN MODAL ===== -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-modal">
+            <h2><i class="fas fa-lock"></i> Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" placeholder="Enter username" required />
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password" required />
+                </div>
+                <button type="submit" class="btn-login">Login</button>
+                <div class="error-msg" id="loginError">Invalid credentials. Try again.</div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== ADMIN CONTENT ===== -->
+    <div id="adminContent" style="display:none;">
+        <div class="container">
+            <div class="admin-header">
+                <h1><i class="fas fa-cog"></i> Portfolio Admin</h1>
+                <div class="admin-actions">
+                    <a href="index.html" class="btn-home"><i class="fas fa-home"></i> Home</a>
+                    <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+
+            <div class="section" data-aos="fade-up">
+                <h2>Site Content</h2>
+                <div id="configForm" class="grid-2"></div>
+                <button class="btn" id="saveConfigBtn"><i class="fas fa-save"></i> Save All Changes</button>
+            </div>
+
+            <div class="section" data-aos="fade-up" data-aos-delay="100">
+                <h2>Projects</h2>
+                <div id="projectList">
+                    <!-- Skeleton loaders -->
+                    <div class="skeleton"></div>
+                    <div class="skeleton"></div>
+                    <div class="skeleton"></div>
+                </div>
+                <hr style="border-color: var(--border); margin: 1.5rem 0;">
+                <h3>Add New Project</h3>
+                <form id="addProjectForm">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="newTitle" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="newDesc" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Technologies (comma separated)</label>
+                        <input type="text" id="newTech" />
+                    </div>
+                    <div class="form-group">
+                        <label>GitHub URL</label>
+                        <input type="url" id="newGithub" />
+                    </div>
+                    <div class="form-group">
+                        <label>Live Demo URL</label>
+                        <input type="url" id="newLive" />
+                    </div>
+                    <div class="form-group">
+                        <label>Image URL (optional)</label>
+                        <input type="url" id="newImage" />
+                    </div>
+                    <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i> Add Project</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Success!</span>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 600, once: true });
+
+        const API_BASE = 'http://localhost:5000/api';
+        const AUTH_KEY = 'portfolioAuth';
+        const VALID_USER = 'luckyprofile';
+        const VALID_PASS = 'lucky4321';
+
+        // ===== AUTH =====
+        function isLoggedIn() { return localStorage.getItem(AUTH_KEY) === 'true'; }
+
+        function login(username, password) {
+            if (username === VALID_USER && password === VALID_PASS) {
+                localStorage.setItem(AUTH_KEY, 'true');
+                return true;
+            }
+            return false;
+        }
+
+        function logout() {
+            localStorage.removeItem(AUTH_KEY);
+            window.location.reload();
+        }
+
+        // ===== LOGIN MODAL =====
+        const loginOverlay = document.getElementById('loginOverlay');
+        const loginForm = document.getElementById('loginForm');
+        const loginError = document.getElementById('loginError');
+        let pendingAction = null;
+
+        function showLoginModal(callback) {
+            pendingAction = callback;
+            loginError.classList.remove('show');
+            loginForm.reset();
+            loginOverlay.classList.add('active');
+            document.getElementById('loginUsername').focus();
+        }
+
+        function hideLoginModal() {
+            loginOverlay.classList.remove('active');
+            pendingAction = null;
+        }
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            if (login(username, password)) {
+                hideLoginModal();
+                if (typeof pendingAction === 'function') {
+                    pendingAction();
+                    pendingAction = null;
+                }
+                showToast('Login successful!', 'success');
+                document.getElementById('adminContent').style.display = 'block';
+                initAdmin();
+            } else {
+                loginError.classList.add('show');
+                loginError.textContent = 'Invalid username or password.';
+            }
+        });
+
+        loginOverlay.addEventListener('click', (e) => {
+            if (e.target === loginOverlay) {
+                hideLoginModal();
+                pendingAction = null;
+            }
+        });
+
+        // ===== TOAST =====
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = toast.querySelector('i');
+            const message = document.getElementById('toastMessage');
+            message.textContent = msg;
+            toast.className = 'toast ' + type;
+            icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            clearTimeout(window.toastTimeout);
+            window.toastTimeout = setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        // ===== ADMIN LOGIC =====
+        async function loadConfig() {
+            try {
+                const res = await fetch(`${API_BASE}/config`);
+                if (!res.ok) throw new Error('Failed to load config');
+                const config = await res.json();
+                renderConfig(config);
+            } catch (err) {
+                showToast('Error loading config: ' + err.message, 'error');
+            }
+        }
+
+        function renderConfig(config) {
+            const container = document.getElementById('configForm');
+            container.innerHTML = '';
+            for (const [key, value] of Object.entries(config)) {
+                const div = document.createElement('div');
+                div.className = 'form-group';
+                div.setAttribute('data-aos', 'fade-up');
+                const label = document.createElement('label');
+                label.textContent = key.replace(/_/g, ' ').toUpperCase();
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = value;
+                input.dataset.key = key;
+                div.appendChild(label);
+                div.appendChild(input);
+                container.appendChild(div);
+            }
+        }
+
+        async function saveConfig() {
+            const inputs = document.querySelectorAll('#configForm input');
+            const updates = [];
+            inputs.forEach(inp => {
+                const key = inp.dataset.key;
+                const value = inp.value;
+                updates.push(fetch(`${API_BASE}/config/${key}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ value })
+                }));
+            });
+            try {
+                await Promise.all(updates);
+                showToast('All settings saved!', 'success');
+            } catch (err) {
+                showToast('Error saving config: ' + err.message, 'error');
+            }
+        }
+
+        async function loadProjects() {
+            try {
+                const res = await fetch(`${API_BASE}/projects`);
+                if (!res.ok) throw new Error('Failed to load projects');
+                const data = await res.json();
+                renderProjects(data);
+            } catch (err) {
+                showToast('Error loading projects: ' + err.message, 'error');
+            }
+        }
+
+        function renderProjects(projects) {
+            const container = document.getElementById('projectList');
+            if (projects.length === 0) {
+                container.innerHTML = '<p style="color:#888;">No projects yet.</p>';
+                return;
+            }
+            container.innerHTML = projects.map(p => `
+                <div class="project-item" data-id="${p.id}" data-aos="fade-up">
+                    <div class="project-info">
+                        <h3>${escapeHtml(p.title)}</h3>
+                        <p>${escapeHtml(p.description || '')}</p>
+                        <small>Tech: ${escapeHtml(p.technologies || '')}</small>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn-edit-project" data-id="${p.id}"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn-delete-project" data-id="${p.id}"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.btn-edit-project').forEach(btn => {
+                btn.addEventListener('click', () => editProject(btn.dataset.id));
+            });
+            document.querySelectorAll('.btn-delete-project').forEach(btn => {
+                btn.addEventListener('click', () => deleteProject(btn.dataset.id));
+            });
+
+            // Refresh AOS
+            AOS.refresh();
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
+        }
+
+        async function deleteProject(id) {
+            if (!confirm('Delete this project?')) return;
+            try {
+                const res = await fetch(`${API_BASE}/projects/${id}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error('Delete failed');
+                showToast('Project deleted', 'success');
+                loadProjects();
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        }
+
+        async function editProject(id) {
+            try {
+                const res = await fetch(`${API_BASE}/projects/${id}`);
+                if (!res.ok) throw new Error('Failed to load project');
+                const project = await res.json();
+                document.getElementById('newTitle').value = project.title;
+                document.getElementById('newDesc').value = project.description || '';
+                document.getElementById('newTech').value = project.technologies || '';
+                document.getElementById('newGithub').value = project.github_url || '';
+                document.getElementById('newLive').value = project.live_url || '';
+                document.getElementById('newImage').value = project.image_url || '';
+                const btn = document.querySelector('#addProjectForm button[type="submit"]');
+                btn.textContent = 'Update Project';
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-primary');
+                btn.dataset.editId = id;
+            } catch (err) {
+                showToast('Failed to load project: ' + err.message, 'error');
+            }
+        }
+
+        async function handleProjectSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            const btn = form.querySelector('button[type="submit"]');
+            const editId = btn.dataset.editId;
+
+            const data = {
+                title: document.getElementById('newTitle').value.trim(),
+                description: document.getElementById('newDesc').value.trim(),
+                technologies: document.getElementById('newTech').value.trim(),
+                github_url: document.getElementById('newGithub').value.trim(),
+                live_url: document.getElementById('newLive').value.trim(),
+                image_url: document.getElementById('newImage').value.trim(),
+            };
+
+            try {
+                let url = `${API_BASE}/projects`;
+                let method = 'POST';
+                if (editId) {
+                    url += `/${editId}`;
+                    method = 'PUT';
+                }
+                const res = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (!res.ok) throw new Error('Save failed');
+                showToast(editId ? 'Project updated!' : 'Project added!', 'success');
+                form.reset();
+                btn.textContent = 'Add Project';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-success');
+                delete btn.dataset.editId;
+                loadProjects();
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        }
+
+        function initAdmin() {
+            loadConfig();
+            loadProjects();
+            document.getElementById('saveConfigBtn').addEventListener('click', saveConfig);
+            document.getElementById('addProjectForm').addEventListener('submit', handleProjectSubmit);
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+        }
+
+        // ===== ON LOAD =====
+        document.addEventListener('DOMContentLoaded', () => {
+            if (isLoggedIn()) {
+                document.getElementById('adminContent').style.display = 'block';
+                initAdmin();
+            } else {
+                showLoginModal(() => {
+                    document.getElementById('adminContent').style.display = 'block';
+                    initAdmin();
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
